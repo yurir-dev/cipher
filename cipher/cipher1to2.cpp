@@ -2,6 +2,7 @@
 
 #include <array>
 #include <random>
+#include <algorithm>
 
 using namespace cipher;
 
@@ -37,6 +38,11 @@ cipher1to2::cipher1to2(const std::string_view& key)
 }
 cipher1to2::~cipher1to2() = default;
 
+static uint8_t xor4bytes(const uint32_t val)
+{
+	const uint8_t* ptr{reinterpret_cast<const uint8_t*>(&val)};
+	return ptr[0] ^ ptr[1] ^ ptr[2] ^ ptr[3];
+}
 void cipher1to2::encipher(const uint8_t* plaintext, size_t lenPlain, uint8_t* ciphertext, size_t& ciphertextLen)const noexcept
 {
 	uint16_t* cipherPtr{ reinterpret_cast<uint16_t*>(ciphertext) };
@@ -45,7 +51,7 @@ void cipher1to2::encipher(const uint8_t* plaintext, size_t lenPlain, uint8_t* ci
 	{
 		std::random_device rd;
 		std::mt19937 gen(rd());
-		const uint8_t randIndex{gen() & 0xff};
+		const uint8_t randIndex{xor4bytes(gen())};
 
 		cipherPtr[i] = _impl->_plain2cipher[plaintext[i]][randIndex];
 	}
