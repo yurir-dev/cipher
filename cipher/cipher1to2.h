@@ -7,7 +7,7 @@ namespace cipher
 {
 	/*
 		1) a homophonic substitution cipher with 64 bits key (the string_view key is hashed to size_t)
-		2) every plaintext byte becames 2 bytes in ciphertext.
+		2) every plaintext byte becomes 2 bytes in ciphertext.
 		   for every plaintext value in [0, 255] the cipher value is a randomly chosen from assigned 256 values in the range of [0, 256*256]
 		   each plaintext byte has a unique group of 256 bytes in the range of [0, 256*256], these possible 256 values are defined by the key.
 	*/
